@@ -1,3 +1,6 @@
+
+complete -C "${PYTHON_INSTALL_PATH}/aws_completer" aws 
+
 ecr-login() {
     REGION=${REGION:-us-east-1}
     ACCOUNT_ID=${ACCOUNT_ID:-485185227295}
