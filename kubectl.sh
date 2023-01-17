@@ -6,6 +6,7 @@ alias kcn="kubectl config  get-contexts $(kcc) | tail -n +2 | sed 's/.* //'"
 alias ktx="kubectl config use-context"
 alias kgp="kubectl get po"
 alias kns="kubectl config set-context --current --namespace "
+alias kevents="kubectl get events -o custom-columns=FirstSeen:.firstTimestamp,LastSeen:.lastTimestamp,Count:.count,From:.source.component,Type:.type,Reason:.reason,Message:.message"
 
 complete -F __start_kubectl k
 complete -F _complete_alias ktx

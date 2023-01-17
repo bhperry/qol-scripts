@@ -39,3 +39,9 @@ warning() {
     color "WARNING" $BLD$YLW -n
     echo -e ": ${@}"
 }
+
+showmecolors() {
+    for KEY in ${!TEXT_STYLES[*]}; do
+        echo "${KEY}: \\033[${TEXT_STYLES[$KEY]}m"
+    done
+}

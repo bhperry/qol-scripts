@@ -20,18 +20,40 @@ complete -C _workspace_completion workspace
 
 NOTES=~/workspace/notes
 notes() {
-   NOTE=$NOTES/$1
-   if [ -d $NOTE ]; then
-       for FILE in $(ls $NOTE); do
-           echo $1/$FILE
-       done
-   elif [ -f $NOTE ]; then
-       cat $NOTE
-       echo
-   else
-       error "\"$NOTE\" not found"
-       return 1
-   fi
+    local EDIT=false
+    local NOTE=""
+    while [ "$1" ]; do
+        case $1 in
+            -e | --edit )
+                EDIT=true
+                ;;
+            * )
+                NOTE=$1
+                ;;
+        esac
+        shift
+    done
+    if [ ! "$NOTE" ]; then
+        error "Missing note filename"
+        return 1
+    fi
+    NOTE=$NOTES/$NOTE
+
+    if [ -d $NOTE ]; then
+        for FILE in $(ls $NOTE); do
+            echo $1/$FILE
+        done
+    elif [ -f $NOTE ]; then
+        if [ "$EDIT" ]; then
+            vim $NOTE
+        else
+            cat $NOTE
+            echo
+        fi
+    else
+        error "\"$NOTE\" not found"
+        return 1
+    fi
 }
 
 _notes_completion() {
