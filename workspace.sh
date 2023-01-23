@@ -44,7 +44,7 @@ notes() {
             echo $1/$FILE
         done
     elif [ -f $NOTE ]; then
-        if [ "$EDIT" ]; then
+        if [ "$EDIT" == "true" ]; then
             vim $NOTE
         else
             cat $NOTE
