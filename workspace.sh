@@ -6,9 +6,11 @@ workspace() {
         return 1
     fi
     cd -P ${WORKSPACE}/${DIR}
-    conda deactivate
-    if conda info --envs | awk '{print $1}' | grep -q ^${DIR}$; then
-        conda activate ${DIR}
+    if which conda &>/dev/null; then
+        conda deactivate
+        if conda info --envs | awk '{print $1}' | grep -q ^${DIR}$; then
+            conda activate ${DIR}
+        fi
     fi
 }
 
