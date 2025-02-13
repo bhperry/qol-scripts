@@ -45,3 +45,13 @@ showmecolors() {
         echo "${KEY}: \\033[${TEXT_STYLES[$KEY]}m"
     done
 }
+
+repeat(){
+	for i in $(seq 0 $2); do echo -n "$1"; done
+}
+
+header() {
+    echo $@
+    repeat "-" $(echo $@ | wc -c)
+    echo
+}
