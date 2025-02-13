@@ -16,13 +16,21 @@ if which kubectl &>/dev/null; then
     klabels() {
         local VARS="-v NAME=1"
         local PASSTHROUGH
-        local WATCH
+        local FILTER
 
         while [ $1 ]; do
             case $1 in
-                --all-namespaces )
+                --all-namespaces | -A )
                     VARS="-v NAME=2"
                     PASSTHROUGH+=" $1"
+                    ;;
+                --filter | -f )
+                    shift
+                    if [ "$FILTER" ]; then
+                        FILTER="$FILTER|$1"
+                    else
+                        FILTER=$1
+                    fi
                     ;;
                 * )
                     PASSTHROUGH+=" $1"
@@ -31,6 +39,14 @@ if which kubectl &>/dev/null; then
             shift
         done
 
-        kubectl get ${PASSTHROUGH:-pods} --show-labels | tail -n +2 | awk $VARS '{print $NAME"\n    "$NF"\n"}' | sed 's/,/\n    /g; s/=/: /g'
+        _klabels() {
+            kubectl get ${PASSTHROUGH:-pods} --show-labels | tail -n +2 | awk $VARS '{print $NAME"\n    "$NF"\n"}' | sed 's/,/\n    /g; s/=/: /g'
+        }
+
+        if [ "$FILTER" ]; then
+            _klabels | grep -E "$FILTER|^[^ ]*$" --color=never
+        else
+            _klabels
+        fi
     }
 fi
