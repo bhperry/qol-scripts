@@ -105,3 +105,14 @@ gnuke() {
     gb | grep -v '\*' | xargs git branch ${DEL}
     git fetch --prune --all
 }
+
+gh-notifications-read() {
+    # Useful for marking "ghost notifications" as read
+    #   Can happen when spam messages send notifications but are deleted before you can resolve
+    LAST_READ_AT=$1
+    if [ ! "$LAST_READ_AT" ]; then
+        echo "Missing arg LAST_READ_AT (format: YYYY-mm-DDTHH:MM:SSZ)"
+        return 1
+    fi
+    gh api --method PUT -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28"  /notifications -f "last_read_at=$LAST_READ_AT" -F "read=true"
+}
