@@ -8,9 +8,13 @@ workspace() {
     cd -P ${WORKSPACE}/${DIR}
     if which conda &>/dev/null; then
         conda deactivate
-        if conda info --envs | awk '{print $1}' | grep -q ^${DIR}$; then
-            conda activate ${DIR}
-        fi
+        ENV_NAMES="${DIR} $(echo ${DIR} | sed 's,/, ,g')"
+        for ENV_NAME in $ENV_NAMES; do
+            if conda info --envs | awk '{print $1}' | grep -q ^${ENV_NAME}$; then
+                conda activate ${ENV_NAME}
+                break
+            fi
+        done
     fi
 }
 
