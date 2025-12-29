@@ -19,7 +19,11 @@ workspace() {
 }
 
 _workspace_completion() {
-    find ${WORKSPACE}/ -maxdepth 1 -type d,l | sed 's,^.*/,,g' | grep -v '^$' | grep ^${2}
+    local SEARCH="${WORKSPACE}/"
+    if [[ ${2} = */* ]]; then
+        SEARCH=$SEARCH$(echo ${2} | rev | cut -d"/" -f2-  | rev)
+    fi
+    find ${SEARCH} -maxdepth 1 -type d,l | sed 's,^'"${WORKSPACE}"'/,,' | grep -v '^$' | grep ^${2}
 }
 complete -C _workspace_completion workspace
 
