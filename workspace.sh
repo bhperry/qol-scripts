@@ -2,9 +2,10 @@ WORKSPACE=~/workspace
 workspace() {
     DIR=${1}
     if [ ! "${DIR}" ]; then
-        error "<dir> arg is required"
-        return 1
+        cd ${WORKSPACE}
+        return
     fi
+    
     cd -P ${WORKSPACE}/${DIR}
     if which conda &>/dev/null; then
         conda deactivate
