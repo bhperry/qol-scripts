@@ -20,11 +20,22 @@ workspace() {
 }
 
 _workspace_completion() {
-    local SEARCH="${WORKSPACE}/"
-    if [[ ${2} = */* ]]; then
-        SEARCH=$SEARCH$(echo ${2} | rev | cut -d"/" -f2-  | rev)
+    local SEARCH=${WORKSPACE}/
+    local FILTER=${2}
+    if [[ $FILTER = */* ]]; then
+        SEARCH=$SEARCH$(echo $FILTER | rev | cut -d"/" -f2-  | rev)
     fi
-    find ${SEARCH} -maxdepth 1 -type d,l | sed 's,^'"${WORKSPACE}"'/,,' | grep -v '^$' | grep ^${2}
+
+    _find() {
+        local DIR=$1
+        local FILTER=$2
+        find $DIR -maxdepth 1 -type d,l | sed 's,^'"${WORKSPACE}"'/,,' | grep -v '^$' | grep ^$FILTER
+    }
+    _find $SEARCH $FILTER
+    local MATCHES=( $(_find $SEARCH $FILTER) )
+    if [[ ${#MATCHES[@]} == 1 ]]; then
+        _find ${SEARCH}${MATCHES[@]} $FILTER
+    fi
 }
 complete -C _workspace_completion workspace
 
