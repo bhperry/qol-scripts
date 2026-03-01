@@ -23,7 +23,7 @@ _workspace_completion() {
     local SEARCH=${WORKSPACE}/
     local FILTER=${2}
     if [[ $FILTER = */* ]]; then
-        SEARCH=$SEARCH$(echo $FILTER | rev | cut -d"/" -f2-  | rev)
+        SEARCH=$SEARCH$(echo $FILTER | rev | cut -d"/" -f2- | rev)
     fi
 
     _find() {
@@ -34,7 +34,7 @@ _workspace_completion() {
     _find $SEARCH $FILTER
     local MATCHES=( $(_find $SEARCH $FILTER) )
     if [[ ${#MATCHES[@]} == 1 ]]; then
-        _find ${SEARCH}${MATCHES[@]} $FILTER
+        _find ${WORKSPACE}/${MATCHES[@]} $FILTER
     fi
 }
 complete -C _workspace_completion workspace
