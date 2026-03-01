@@ -7,6 +7,7 @@ alias gc='git commit -am '"${@}"''
 git-config() {
     git config --global user.email "bhperry94@gmail.com"
     git config --global user.name "Ben Perry"
+    git config --global core.editor "vim"
 }
 
 git-dir() {
