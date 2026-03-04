@@ -8,6 +8,8 @@ git-config() {
     git config --global user.email "bhperry94@gmail.com"
     git config --global user.name "Ben Perry"
     git config --global core.editor "vim"
+    # Use SSH instead of HTTPS (e.g. for go install on private repo)
+    git config --global url."git@github.com:".insteadOf "https://github.com/"
 }
 
 git-dir() {
