@@ -1,5 +1,7 @@
 if which kubectl &>/dev/null; then
     # Kubectl
+    export KUBE_EDITOR="vim"
+
     alias k=kubectl
     alias kcc="kubectl config current-context"
     alias kcn="kubectl config  get-contexts $(kcc) | tail -n +2 | sed 's/.* //'"
