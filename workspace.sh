@@ -5,7 +5,7 @@ workspace() {
         cd ${WORKSPACE}
         return
     fi
-    
+
     cd -P ${WORKSPACE}/${DIR}
     if which conda &>/dev/null; then
         conda deactivate
@@ -29,7 +29,7 @@ _workspace_completion() {
     _find() {
         local DIR=$1
         local FILTER=$2
-        find $DIR -maxdepth 1 -type d,l | sed 's,^'"${WORKSPACE}"'/,,' | grep -v '^$' | grep ^$FILTER
+        find -L $DIR -maxdepth 1 -type d,l | sed 's,^'"${WORKSPACE}"'/,,' | grep -v '^$' | grep ^$FILTER
     }
     _find $SEARCH $FILTER
     local MATCHES=( $(_find $SEARCH $FILTER) )
